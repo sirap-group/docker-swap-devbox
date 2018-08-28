@@ -23,7 +23,9 @@ RUN deluser node \
     --gecos "" \
     "${username}" \
   && echo "${username}:${password}" | chpasswd
-
+RUN npm i -g generate \
+  generate-swap-project \
+  generate-swap-generator
 
 USER ${username}
 WORKDIR "/home/${username}/app"
