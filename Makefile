@@ -13,4 +13,12 @@ run:
 install:
 	sudo cp devbox-ctl /usr/local/bin/devbox-ctl
 
+upgrade:
+	devbox-ctl stop
+	git pull
+	make install
+	devbox-ctl build
+	devbox-ctl start .
+	devbox-ctl bash
+
 .PHONY: build run install
