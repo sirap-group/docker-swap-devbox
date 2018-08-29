@@ -10,4 +10,7 @@ build:
 run:
 	docker run -it --rm --name $(CONTAINER_NAME) $(IMAGE_NAME):$(IMAGE_TAG) bash
 
-.PHONY: build run
+install:
+	sudo cp devbox-ctl /usr/local/bin/devbox-ctl
+
+.PHONY: build run install
