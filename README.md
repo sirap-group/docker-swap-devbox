@@ -8,6 +8,21 @@ The `docker-swap-devbox` image is published on Docker Hub at that URL
 
 * [Ubuntu-Node-Git Base Image Repo](https://github.com/rbecheras/docker-ubuntu-node-git)
 
+This image contains the following tools:
+
+- Ubuntu LTS
+- git tools
+    - [`Git`](https://git-scm.com)
+    - [`Ungit`](https://github.com/FredrikNoren/ungit)
+    - [`Lazygit`](https://github.com/jesseduffield/lazygit)
+- [`NodeJS`](https://nodejs.org/en/)
+- `NodeJS` packages
+    - [`generate`](https://www.npmjs.com/package/generate)
+    - [`generate-swap-project`](https://www.npmjs.com/package/generate-swap-project)
+    - [`generate-swap-generator`](https://www.npmjs.com/package/generate-swap-generator)
+    - [`@angular/cli`](https://cli.angular.io/)
+    - [`ionic@latest`](https://beta.ionicframework.com/docs/cli/overview)
+
 ## Git Tags and Docker Tags
 
 This image follows the same versionning rules of its base image `ubuntu-node-git`.
