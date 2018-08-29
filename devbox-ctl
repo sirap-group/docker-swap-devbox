@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+DEFAULT_WORKSPACE="${HOME}/swap-devbox-workspace"
+WORKSPACE="${DEFAULT_WORKSPACE}"
+
+DEFAULT_INNER_WORKSPACE="/tmp"
+PROJECT_INNER_WORKSPACE="/home/${USERNAME}/app"
+INNER_WORKSPACE="$DEFAULT_INNER_WORKSPACE"
+
+IMAGE_NAME="sirap/swap-devbox"
+IMAGE_TAG="latest"
+CONTAINER="devbox"
+
+mkdir -p "${WORKSPACE}"
+
+if [[ "$1" == "start" ]]; then
+  if [[ ! -z "$2" ]]; then
+    workspace="$2"
+    pwd=$(pwd)
+    cd $workspace
+    WORKSPACE=$(pwd)
+    cd $pwd
+
+    INNER_WORKSPACE=$PROJECT_INNER_WORKSPACE
+  fi;
+
+  docker run --rm -itd \
+    --name "${CONTAINER}" \
+    -v "${WORKSPACE}":"${INNER_WORKSPACE}" \
+    --net host \
+    -w "${WORKSPACE}" \
+    "${IMAGE_NAME}:${IMAGE_TAG}" \
+  && echo "SWAP devbox successfully started.
+Workspace: ${WORKSPACE}
+Exposed ports: net host (all)"
+
+elif [[ "$1" == "stop" ]]; then
+  docker stop "${CONTAINER}" && echo "devbox stopped"
+
+elif [[ "$1" == "bash" ]]; then
+  if [[ "$2" == "-r" ]]
+  then
+    docker exec -it -u "0" -w "/root"  "${CONTAINER}" bash
+  else
+    docker exec -it -u "${UID}" -w "${INNER_WORKSPACE}" "${CONTAINER}" bash
+  fi
+fi
