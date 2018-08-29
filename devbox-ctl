@@ -10,7 +10,7 @@ DEFAULT_WORKSPACE="${HOME}/swap-devbox-workspace"
 WORKSPACE="${DEFAULT_WORKSPACE}"
 
 DEFAULT_INNER_WORKSPACE="/tmp"
-PROJECT_INNER_WORKSPACE="/home/${USERNAME}/app"
+PROJECT_INNER_WORKSPACE="/home/${username}/app"
 INNER_WORKSPACE="$DEFAULT_INNER_WORKSPACE"
 
 BASE_IMAGE_NAME="sirap/swap-devbox"
@@ -71,9 +71,9 @@ elif [[ "$1" == "start" ]]; then
   docker run --rm -itd \
     --name "${CONTAINER}" \
     --volume "${WORKSPACE}":"${INNER_WORKSPACE}" \
-    --volume "/home/${USERNAME}/.gitconfig:/home/${USERNAME}/.gitconfig" \
-    --volume "/home/${USERNAME}/.gnupg:/home/${USERNAME}/.gnupg" \
-    --volume "/home/${USERNAME}/.ssh:/home/${USERNAME}/.ssh" \
+    --volume "/home/${username}/.gitconfig:/home/${username}/.gitconfig" \
+    --volume "/home/${username}/.gnupg:/home/${username}/.gnupg" \
+    --volume "/home/${username}/.ssh:/home/${username}/.ssh" \
     --net host \
     -w "${WORKSPACE}" \
     "${IMAGE_NAME}:${IMAGE_TAG}" \
@@ -92,6 +92,7 @@ elif [[ "$1" == "bash" ]]; then
   then
     docker exec -it -u "0" -w "/root"  "${CONTAINER}" bash
   else
+    INNER_WORKSPACE="${PROJECT_INNER_WORKSPACE}"
     docker exec -it -u "${UID}" -w "${INNER_WORKSPACE}" "${CONTAINER}" bash
   fi
 
