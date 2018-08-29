@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+if [[ ! -z "${USERNAME}" ]]; then
+  username="${USERNAME}"
+else
+  username="${USER}"
+fi
+
 DEFAULT_WORKSPACE="${HOME}/swap-devbox-workspace"
 WORKSPACE="${DEFAULT_WORKSPACE}"
 
@@ -12,12 +18,6 @@ BASE_IMAGE_TAG="18.04-8"
 IMAGE_NAME="devbox"
 IMAGE_TAG="latest"
 CONTAINER="devbox"
-
-if [[ ! -z "${USERNAME}" ]]; then
-  username="${USERNAME}"
-else
-  username="${USER}"
-fi
 
 
 mkdir -p "${WORKSPACE}"
