@@ -13,14 +13,21 @@ IMAGE_NAME="devbox"
 IMAGE_TAG="latest"
 CONTAINER="devbox"
 
+if [[ ! -z "${USERNAME}" ]]; then
+  username="${USERNAME}"
+else
+  username="${USER}"
+fi
+
+
 mkdir -p "${WORKSPACE}"
 
 if [[ $1 == "build" ]]; then
   docker pull ${BASE_IMAGE_NAME}:${BASE_IMAGE_TAG}
   docker build \
     -t ${IMAGE_NAME}:${IMAGE_TAG} \
-    --build-arg username=$(echo $USERNAME) \
-    --build-arg password=$(echo $USERNAME) \
+    --build-arg username=${username} \
+    --build-arg password=${username} \
     --build-arg uid=$(echo $UID) \
     . \
     -f - <<\EOF
