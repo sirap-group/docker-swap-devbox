@@ -18,7 +18,5 @@ upgrade:
 	git pull
 	make install
 	devbox-ctl build
-	devbox-ctl start .
-	devbox-ctl bash
 
 .PHONY: build run install
