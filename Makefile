@@ -14,7 +14,7 @@ install:
 	sudo cp devbox-ctl /usr/local/bin/devbox-ctl
 
 upgrade:
-	devbox-ctl stop
+	devbox-ctl stop || echo "Skipping."
 	git pull
 	make install
 	devbox-ctl build
