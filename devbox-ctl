@@ -7,14 +7,16 @@ DEFAULT_INNER_WORKSPACE="/tmp"
 PROJECT_INNER_WORKSPACE="/home/${USERNAME}/app"
 INNER_WORKSPACE="$DEFAULT_INNER_WORKSPACE"
 
-IMAGE_NAME="sirap/swap-devbox"
+BASE_IMAGE_NAME="sirap/swap-devbox"
+BASE_IMAGE_TAG="latest"
+IMAGE_NAME="devbox"
 IMAGE_TAG="latest"
 CONTAINER="devbox"
 
 mkdir -p "${WORKSPACE}"
 
 if [[ $1 == "build" ]]; then
-  docker pull ${IMAGE_NAME}:${IMAGE_TAG}
+  docker pull ${BASE_IMAGE_NAME}:${BASE_IMAGE_TAG}
   docker build \
     -t ${IMAGE_NAME}:${IMAGE_TAG} \
     --build-arg username=$(echo $USERNAME) \
@@ -85,4 +87,9 @@ elif [[ "$1" == "bash" ]]; then
   else
     docker exec -it -u "${UID}" -w "${INNER_WORKSPACE}" "${CONTAINER}" bash
   fi
+
+else
+  echo "devbox-ctl needs a command
+Available commands: build, start, stop, bash"
+
 fi
