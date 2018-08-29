@@ -25,7 +25,9 @@ RUN deluser node \
   && echo "${username}:${password}" | chpasswd
 RUN npm i -g generate \
   generate-swap-project \
-  generate-swap-generator
+  generate-swap-generator \
+  @angular/cli \
+  ionic@latest
 
 USER ${username}
 WORKDIR "/home/${username}/app"
