@@ -13,7 +13,41 @@ CONTAINER="devbox"
 
 mkdir -p "${WORKSPACE}"
 
-if [[ "$1" == "start" ]]; then
+if [[ $1 == "build" ]]; then
+  docker build \
+    -t ${IMAGE_NAME}:${IMAGE_TAG} \
+    --build-arg username=$(echo $USERNAME) \
+    --build-arg password=$(echo $USERNAME) \
+    --build-arg uid=$(echo $UID) \
+    . \
+    -f - <<\EOF
+FROM sirap/swap-devbox
+ARG username="developer"
+ARG password="developer"
+ARG uid="1000"
+LABEL Author="Rémi Becheras <r.becheras@sirap.fr>"
+
+USER 0
+RUN deluser developer \
+  && adduser \
+    --disabled-password \
+    --home "/home/${username}" \
+    --shell /bin/bash \
+    --uid "${uid}" \
+    --gecos "" \
+    "${username}" \
+  && echo "${username}:${password}" | chpasswd
+
+
+USER ${username}
+EXPOSE 3000 8448
+VOLUME [ "/data" ]
+WORKDIR "/home/${username}/app"
+CMD [ "bash" ]
+
+EOF
+
+elif [[ "$1" == "start" ]]; then
   if [[ ! -z "$2" ]]; then
     workspace="$2"
     pwd=$(pwd)
@@ -26,12 +60,18 @@ if [[ "$1" == "start" ]]; then
 
   docker run --rm -itd \
     --name "${CONTAINER}" \
-    -v "${WORKSPACE}":"${INNER_WORKSPACE}" \
+    --volume "${WORKSPACE}":"${INNER_WORKSPACE}" \
+    --volume "/home/${USERNAME}/.gitconfig:/home/${USERNAME}/.gitconfig" \
+    --volume "/home/${USERNAME}/.gnupg:/home/${USERNAME}/.gnupg" \
+    --volume "/home/${USERNAME}/.ssh:/home/${USERNAME}/.ssh" \
     --net host \
     -w "${WORKSPACE}" \
     "${IMAGE_NAME}:${IMAGE_TAG}" \
   && echo "SWAP devbox successfully started.
-Workspace: ${WORKSPACE}
+Container Name: ${CONTAINER}
+From Image: ${IMAGE_NAME}:${IMAGE_TAG}
+Inner Workspace: ${INNER_WORKSPACE}
+Outer Workspace: ${WORKSPACE}
 Exposed ports: net host (all)"
 
 elif [[ "$1" == "stop" ]]; then
