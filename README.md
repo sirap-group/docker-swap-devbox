@@ -80,4 +80,4 @@ Copyright © 2018 [Groupe SIRAP](https://github.com/sirap-group)
 
 This software is open source software under  the terms of the MIT license.
 
-See [LICENSE](LICENSE)
+See [LICENSE](LICENSE) 
